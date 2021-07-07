@@ -32,9 +32,14 @@ applicants_filtered=$(echo "$applicants_filtered" | \
 bvi=$(echo "$applicants_filtered" | grep -c "БВИ")
 quota=$(echo "$applicants_filtered" | grep -c "10%")
 paid=$(echo "$applicants_filtered" | grep -c "да")
+only_paid=$(echo "$applicants_filtered" | awk '{print $1}' | grep -c "да")
+targeted=$(echo "$applicants_filtered" | grep -c "ЦП")
 
 # вывод статистики
-echo "Total applicants:" "$total"
+echo "всего:" "$total"
 echo "БВИ:" "$bvi"
 echo "10%:" "$quota"
-echo "Paid:" "$paid"
+echo "все, у кого согласие на платку:" "$paid"
+echo "только платка:" "$only_paid"
+echo "целевое:" "$targeted"
+echo "мест для ОК:" $((34 - 4 - "$bvi" - 8))"-"$((34 - 4 - "$bvi" - "$targeted"))
