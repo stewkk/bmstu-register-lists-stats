@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-spec="01.03.02"
+if [ ${1+x} ]; then
+    spec="$1"
+else
+    spec="01.03.02"
+fi
 
 ascii_name=$(cat << "EOF"
  ____  __  __ ____ _____ _   _   ____ _____  _  _____ ____
@@ -14,7 +18,7 @@ EOF
 echo "$ascii_name"
 
 # скачать списки зарегистрированных
-tmp_dir="/tmp/bmstu_stats/"
+tmp_dir="/tmp/bmstu_stats"
 mkdir -p $tmp_dir
 wget -nv \
 -P $tmp_dir \
@@ -42,4 +46,4 @@ echo "10%:" "$quota"
 echo "все, у кого согласие на платку:" "$paid"
 echo "только платка:" "$only_paid"
 echo "целевое:" "$targeted"
-echo "мест для ОК:" $((34 - 4 - "$bvi" - 8))"-"$((34 - 4 - "$bvi" - "$targeted"))
+echo "мест для ОК:" $((34 - 4 - "$bvi" - 8))" - "$((34 - 4 - "$bvi" - "$targeted"))
