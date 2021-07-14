@@ -21,10 +21,10 @@ echo "$ascii_name"
 tmp_dir="/tmp/bmstu_stats"
 mkdir -p $tmp_dir
 wget -nv \
--P $tmp_dir \
+-P $tmp_dir/ \
 https://priem.bmstu.ru/lists/upload/registered/registered-first-Moscow.pdf
 
-# преобразовать pdf в txt
+# # преобразовать pdf в txt
 pdftotext -layout $tmp_dir/registered-first-Moscow.pdf
 rm $tmp_dir/registered-first-Moscow.pdf
 
@@ -38,6 +38,9 @@ quota=$(echo "$applicants_filtered" | grep -c "10%")
 paid=$(echo "$applicants_filtered" | grep -c "да")
 only_paid=$(echo "$applicants_filtered" | awk '{print $1}' | grep -c "да")
 targeted=$(echo "$applicants_filtered" | grep -c "ЦП")
+places_total=$(grep "$spec" "./places_list.txt" | awk '{print $3}')
+places_quota=$(grep "$spec" "./places_list.txt" | awk '{print $4}')
+places_targeted=$(grep "$spec" "./places_list.txt" | awk '{print $5}')
 
 # вывод статистики
 echo "всего:" "$total"
@@ -46,4 +49,6 @@ echo "10%:" "$quota"
 echo "все, у кого согласие на платку:" "$paid"
 echo "только платка:" "$only_paid"
 echo "целевое:" "$targeted"
-echo "мест для ОК:" $((34 - 4 - "$bvi" - 8))" - "$((34 - 4 - "$bvi" - "$targeted"))
+targeted=$(("$targeted" < "$places_targeted" ? "$targeted" : "$places_targeted"))
+quota=$(("$quota" < "$places_quota" ? "$quota" : "$places_quota"))
+echo "мест для ОК:" $(("$places_total" - "$places_quota" - "$bvi" - "$places_targeted"))" - "$(("$places_total" - "$places_quota" - "$bvi" - "$targeted"))
