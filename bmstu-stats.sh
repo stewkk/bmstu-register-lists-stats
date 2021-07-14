@@ -16,11 +16,12 @@ ascii_name=$(cat << "EOF"
 EOF
 )
 echo "$ascii_name"
+echo "$spec"
 
 # скачать списки зарегистрированных
 tmp_dir="/tmp/bmstu_stats"
 mkdir -p $tmp_dir
-wget -nv \
+wget -q \
 -P $tmp_dir/ \
 https://priem.bmstu.ru/lists/upload/registered/registered-first-Moscow.pdf
 
