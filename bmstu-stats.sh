@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+min() {
+    (( $1 <= $2 )) && echo "$1" || echo "$2"
+}
+
 ascii_name=$(cat << "EOF"
  ____  __  __ ____ _____ _   _   ____ _____  _  _____ ____
 | __ )|  \/  / ___|_   _| | | | / ___|_   _|/ \|_   _/ ___|
@@ -58,6 +62,6 @@ echo "10%:" "$quota"
 echo "все, у кого согласие на платку:" "$paid"
 echo "только платка:" "$only_paid"
 echo "целевое:" "$targeted"
-targeted=$(("$targeted" < "$places_targeted" ? "$targeted" : "$places_targeted"))
-quota=$(("$quota" < "$places_quota" ? "$quota" : "$places_quota"))
+targeted=$(min "$targeted" "$places_targeted")
+quota=$(min "$quota" "$places_quota")
 echo "мест для ОК:" $(("$places_total" - "$places_quota" - "$bvi" - "$places_targeted"))" - "$(("$places_total" - "$places_quota" - "$bvi" - "$targeted"))
