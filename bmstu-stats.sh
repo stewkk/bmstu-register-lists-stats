@@ -33,13 +33,14 @@ echo "$spec"
 # скачать списки зарегистрированных
 tmp_dir="/tmp/bmstu_stats"
 mkdir -p $tmp_dir
+rm -f $tmp_dir/registered-first-Moscow.pdf || true
 wget -q \
 -P $tmp_dir/ \
 https://priem.bmstu.ru/lists/upload/registered/registered-first-Moscow.pdf
 
 # # преобразовать pdf в txt
 pdftotext -layout $tmp_dir/registered-first-Moscow.pdf
-rm $tmp_dir/registered-first-Moscow.pdf
+rm -f $tmp_dir/registered-first-Moscow.pdf || true
 
 # получить статистику по направлению
 applicants_filtered=$(grep $spec < $tmp_dir/registered-first-Moscow.txt)
