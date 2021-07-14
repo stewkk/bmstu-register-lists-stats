@@ -38,7 +38,7 @@ wget -q \
 -P $tmp_dir/ \
 https://priem.bmstu.ru/lists/upload/registered/registered-first-Moscow.pdf
 
-# # преобразовать pdf в txt
+# преобразовать pdf в txt
 pdftotext -layout $tmp_dir/registered-first-Moscow.pdf
 rm -f $tmp_dir/registered-first-Moscow.pdf || true
 
