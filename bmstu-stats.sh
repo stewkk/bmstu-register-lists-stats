@@ -50,7 +50,8 @@ applicants_filtered=$(echo "$applicants_filtered" | \
 bvi=$(echo "$applicants_filtered" | grep -c "БВИ" || true)
 quota=$(echo "$applicants_filtered" | grep -c "10%" || true)
 paid=$(echo "$applicants_filtered" | grep -c "да" || true)
-only_paid=$(echo "$applicants_filtered" | awk '{print $1}' | grep -c "да" || true)
+only_paid=$(echo "$applicants_filtered" | awk '{print $1}'\
+    | grep -c "да" || true)
 targeted=$(echo "$applicants_filtered" | grep -c "ЦП" || true)
 places_total=$(grep "$spec" "./places_list.txt" | awk '{print $3}')
 places_quota=$(grep "$spec" "./places_list.txt" | awk '{print $4}')
@@ -65,4 +66,9 @@ echo "только платка:" "$only_paid"
 echo "целевое:" "$targeted"
 targeted=$(min "$targeted" "$places_targeted")
 quota=$(min "$quota" "$places_quota")
-echo "мест для ОК:" $(("$places_total" - "$places_quota" - "$bvi" - "$places_targeted"))" - "$(("$places_total" - "$places_quota" - "$bvi" - "$targeted"))
+ok=("мест для ОК: "
+    $(("$places_total" - "$places_quota" - "$bvi" - "$places_targeted"))
+    " - "
+    $(("$places_total" - "$places_quota" - "$bvi" - "$targeted")))
+printf "%s" "${ok[@]}"
+echo ""
