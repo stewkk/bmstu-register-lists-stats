@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [ ${1+x} ]; then
-    spec="$1"
-else
-    spec="01.03.02"
-fi
-
 ascii_name=$(cat << "EOF"
  ____  __  __ ____ _____ _   _   ____ _____  _  _____ ____
 | __ )|  \/  / ___|_   _| | | | / ___|_   _|/ \|_   _/ ___|
@@ -15,7 +9,21 @@ ascii_name=$(cat << "EOF"
 |____/|_|  |_|____/ |_|  \___/  |____/ |_/_/   \_\_| |____/
 EOF
 )
-echo "$ascii_name"
+
+is_quiet=""
+
+if [ ${2+x} ]; then
+    spec="$2"
+    is_quiet="$1"
+elif [ ${1+x} ]; then
+    spec="$1"
+else
+    spec="01.03.02"
+fi
+
+if [ "$is_quiet" != "-q" ]; then
+    echo "$ascii_name"
+fi
 echo "$spec"
 
 # скачать списки зарегистрированных
