@@ -29,6 +29,7 @@ if [ "$is_quiet" != "-q" ]; then
     echo "$ascii_name"
 fi
 echo "$spec"
+date
 
 # скачать списки зарегистрированных
 tmp_dir="/tmp/bmstu_stats"
