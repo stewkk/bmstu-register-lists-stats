@@ -25,4 +25,4 @@ awk
 grep
 sed
 pdftotext(poppler)
-bc
+dc

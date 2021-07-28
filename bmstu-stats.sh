@@ -76,7 +76,8 @@ ok=("мест для ОК: "
 printf "%s" "${ok[@]}"
 echo ""
 if [ "$spec" = "01.03.02" ]; then
-    ok_32=$(bc <<< "$places_total - $places_quota - (\
-        $bvi * 0.68) - $targeted")
+    ok_32=$(dc <<< "$places_total $places_quota - \
+        $bvi 0.68 * - \
+        $targeted - p")
     printf "%s%0.f\n" "ОК, если 32% БВИ не подадут согласие: " "$ok_32"
 fi
