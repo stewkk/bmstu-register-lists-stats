@@ -1,0 +1,12 @@
+
+version: "3.8"
+
+services:
+  app:
+    image: bmstu-stats
+    command: ./bmstu-iu9.sh
+    volumes:
+      - datavolume:/var/bmstu-stats/
+
+volumes:
+  datavolume:
