@@ -6,31 +6,33 @@ set -euo pipefail
 # сообщение в телеграм                                                       #
 ##############################################################################
 
-pid=fork
-[ "$pid" = -1 ] && exit 1
+log() {
+    echo $(date) "bmstu-daemon: ""$1" >> bmstu-daemon.log
+}
 
-[ "$pid" -gt 0 ] && exit 0
+start_daemon() {
+    umask 0
 
-umask 0
+    mkdir -p /var/bmstu-stats
+    cd /var/bmstu-stats
 
-# TODO открыть логи для записи
+    log "daemon started"
 
-sid=setsid
-[ "$sid" -lt 0 ] && exit 1
+    exec 0<&-
+    exec 1<&-
+    exec 2<&-
 
-mkdir -p /var/bmstu-stats
-cd /var/bmstu-stats
+    # init
+    test -f state.txt || bmstu-iu9 > state.txt
 
-exec 0<&-
-exec 1<&-
-exec 2<&-
+    while true; do
+        log "updating lists"
+        cp state.txt state_old.txt
+        bmstu-iu9 > state.txt
+        diff -q state.txt state_old.txt || true # TODO отправлять сообщение
+        sleep 30
+    done
+}
 
-# init
-test -f state.txt || bmstu-iu9 > state.txt
-
-while true; do
-    cp state.txt state_old.txt
-    bmstu-iu9 > state.txt
-    diff -q state.txt state_old.txt || true # TODO отправлять сообщение
-    sleep 30
-done
+start_daemon &
+sleep infinity
