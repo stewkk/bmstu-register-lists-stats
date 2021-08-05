@@ -18,14 +18,19 @@ umask 0
 sid=setsid
 [ "$sid" -lt 0 ] && exit 1
 
-[ "$(chdir "/")" -lt 0 ] && exit 1
+mkdir -p /var/bmstu-stats
+cd /var/bmstu-stats
 
 exec 0<&-
 exec 1<&-
 exec 2<&-
 
 # init
+test -f state.txt || bmstu-iu9 > state.txt
 
 while true; do
+    cp state.txt state_old.txt
+    bmstu-iu9 > state.txt
+    diff -q state.txt state_old.txt || true # TODO отправлять сообщение
     sleep 30
 done
