@@ -5,5 +5,6 @@ RUN install_clean poppler-utils wget
 RUN ln -s /app/bmstu-daemon.sh /bin/bmstu-daemon && \
     ln -s /app/bmstu-iu9.sh /bin/bmstu-iu9
 WORKDIR /app
+COPY ./token ./chat_id /var/bmstu-stats/
 COPY ./bmstu-daemon.sh ./bmstu-iu9.sh ./
 CMD ./bmstu-daemon
