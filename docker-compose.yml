@@ -1,0 +1,12 @@
+
+version: "3.8"
+
+services:
+  app:
+    image: bmstu-stats
+    command: bmstu-daemon
+    volumes:
+      - datavolume:/var/bmstu-stats/
+
+volumes:
+  datavolume:
