@@ -48,5 +48,4 @@ start_daemon() {
     done
 }
 
-start_daemon &
-sleep infinity
+start_daemon
