@@ -26,24 +26,25 @@ start_daemon() {
 
     log "daemon started"
 
-    exec 0<&-
-    exec 1<&-
-    exec 2<&-
-
     # init
-    test -f state.txt || \
-        log "state.txt not found, updating lists" \
-        && bmstu-iu9 > state.txt && send_message
-
-    grep -m 1 '^[0-9]\+\/[0-9]\+$' state.txt || \
-        log "state.txt is invalid, updating lists" && bmstu-iu9 > state.txt \
-        && send_message
+    if [ ! -f state.txt ]; then
+        log "state.txt not found, updating lists"
+        bmstu-iu9 > state.txt
+        send_message
+    elif ! grep -m 1 '^[0-9]\+\/[0-9]\+$' state.txt; then
+        log "state.txt is invalid, updating lists"
+        bmstu-iu9 > state.txt
+        send_message
+    fi
 
     while true; do
         log "updating lists"
         cp state.txt state_old.txt
         bmstu-iu9 > state.txt
-        cmp state.txt state_old.txt || log "state changed" && send_message
+        if ! cmp state.txt state_old.txt; then
+            log "state changed"
+            send_message
+        fi
         sleep 30
     done
 }
