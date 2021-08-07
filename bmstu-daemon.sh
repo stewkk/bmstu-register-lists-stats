@@ -24,6 +24,10 @@ start_daemon() {
     mkdir -p /var/bmstu-stats
     cd /var/bmstu-stats
 
+    exec 0<&-
+    exec 1<&-
+    exec 2<&-
+
     log "daemon started"
 
     # init
